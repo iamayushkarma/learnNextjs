@@ -2,7 +2,27 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
-First, run the development server:
+### Install Dependencies
+
+First, install all required dependencies:
+
+````bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+
+```
+env
+MONGO_URL="your MongoDB URI"
+TOKEN_SECRET="your token secret"
+DOMAIN="your domain (most probably http://localhost:3000)"
+````
+
+Run the Development Server
 
 ```bash
 npm run dev
