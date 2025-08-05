@@ -1,36 +1,51 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../nav/page";
 import axios from "axios";
 import Link from "next/link";
 
+type UserType = {
+  _id: string;
+  username: string;
+  email: string;
+  isAdmin: boolean;
+  isVerified: boolean;
+};
+
 function ProfilePage() {
-  const [data, setData] = useState("Nothing");
-  const getUserDetails = async () => {
-    const res = await axios.get("/api/users/me");
-    console.log(res.data);
-    setData(res.data.data._id);
-  };
+  const [data, setData] = useState<UserType | null>(null);
+
+  useEffect(() => {
+    const getUserDetails = async () => {
+      try {
+        const res = await axios.get("/api/users/me", {
+          withCredentials: true, // if you're using cookies for auth
+        });
+        setData(res.data.data);
+      } catch (err) {
+        console.error("Error fetching user", err);
+      }
+    };
+
+    getUserDetails();
+  }, []);
+
   return (
     <>
       <Navbar />
-      <div className="flex items-center justify-center h-[100vh]">
-        Profile page <br />
-        <h1 className="4xl"></h1>
-        <h2>
-          {data === "Nothing" ? (
-            "Nothing"
+      <div className="flex items-center justify-center h-[100vh] flex-col">
+        <p className="flex flex-col">
+          {data ? (
+            <Link className="text-4xl" href={`/profile/${data._id}`}>
+              Wellcome,{" "}
+              <span className="text-blue-500 font-extrabold">
+                {data.username}
+              </span>
+            </Link>
           ) : (
-            <Link href={`/profile/${data}`}>{data}</Link>
+            ""
           )}
-        </h2>
-        <br />
-        <button
-          className="bg-blue-500 px-4 py-2 rounded-lg"
-          onClick={getUserDetails}
-        >
-          Get User details
-        </button>
+        </p>
       </div>
     </>
   );

@@ -18,7 +18,6 @@ export default function SignupPage() {
     email: "",
     password: "",
   });
-
   const validateInputs = () => {
     let valid = true;
     const newErrors = {
